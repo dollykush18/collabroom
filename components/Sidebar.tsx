@@ -1,75 +1,46 @@
 'use client';
+import Image from 'next/image';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 
-import Image from "next/image";
-import Link from "next/link";
-import { SignedIn, UserButton } from "@clerk/nextjs";
-import { usePathname } from "next/navigation";
+import { sidebarLinks } from '@/constants';
+import { cn } from '@/lib/utils';
 
-import { sidebarLinks } from "@/constants";
-import { cn } from "@/lib/utils";
-import MobileNav from "./MobileNav";
-
-const Navbar = () => {
+const Sidebar = () => {
   const pathname = usePathname();
 
   return (
-    <nav className="flex items-center justify-between fixed z-50 w-full bg-dark-1 px-6 py-4 lg:px-10">
-      
-      {/* Logo */}
-      <Link href="/" className="flex items-center gap-2">
-        <Image
-          src="/icons/logo.svg"
-          width={32}
-          height={32}
-          alt="logo"
-        />
-        <p className="text-[26px] font-extrabold text-white">
-          COLLABROOM
-        </p>
-      </Link>
-
-      {/* Navigation Links (from sidebar) */}
-      <div className="flex items-center gap-6">
+    <section className="sticky left-0 top-0 flex h-screen w-fit flex-col  justify-between  bg-dark-1 p-6 pt-28 text-white max-sm:hidden lg:w-[264px]">
+      <div className="flex flex-1 flex-col gap-6">
         {sidebarLinks.map((item) => {
-          const isActive =
-            pathname === item.route ||
-            pathname.startsWith(`${item.route}/`);
-
+          const isActive = pathname === item.route || pathname.startsWith(`${item.route}/`);
+          
           return (
             <Link
               href={item.route}
               key={item.label}
               className={cn(
-                "flex items-center gap-2 text-white px-3 py-2 rounded-md",
+                'flex gap-4 items-center p-4 rounded-lg justify-start',
                 {
-                  "bg-blue-1": isActive,
+                  'bg-blue-1': isActive,
                 }
               )}
             >
               <Image
                 src={item.imgURL}
                 alt={item.label}
-                width={20}
-                height={20}
+                width={24}
+                height={24}
               />
-              <span className="font-semibold">
+              <p className="text-lg font-semibold max-lg:hidden">
                 {item.label}
-              </span>
+              </p>
             </Link>
           );
         })}
       </div>
-
-      {/* User + Mobile Nav */}
-      <div className="flex items-center gap-5">
-        <SignedIn>
-          <UserButton afterSignOutUrl="/sign-in" />
-        </SignedIn>
-
-        <MobileNav />
-      </div>
-    </nav>
+    </section>
   );
 };
 
-export default Navbar;
+export default Sidebar;
