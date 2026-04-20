@@ -50,7 +50,7 @@ const MeetingTypeList = () => {
 
       toast({ title: 'Meeting Created' });
 
-      setTimeout(() => setMeetingLink(''), 10000);
+      setTimeout(() => setMeetingLink(''), 1000000000);
     } catch (error) {
       console.error(error);
       toast({ title: 'Failed to create meeting' });
